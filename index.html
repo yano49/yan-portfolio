@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Yan: developer and AIESEC leader. Games and apps on one side, events and teams on the other.">
+<meta name="theme-color" content="#07060d">
+<meta property="og:title" content="Yan Portfolio">
+<meta property="og:description" content="Developer and AIESEC leader. Games, apps, events and teams.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2312101c'/%3E%3Cpath fill='%23fff' d='M50 14C52 38 62 48 86 50 62 52 52 62 50 86 48 62 38 52 14 50 38 48 48 38 50 14Z'/%3E%3C/svg%3E">
+<title>Yan Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a split gate (Developer | Business) opens into one of two scroll stories. Every section is a tall
+   "track" holding one pinned stage; scroll progress through the track drives the animation. Developer runs violet,
+   Business runs azure; both end on the same ember-orange About page where the portrait rises in front of giant type. */
+:root {
+  color-scheme: dark;
+  --ink: #07060d;
+  --ink-2: #0f0d18;
+  --paper: #f2f1f7;
+  --paper-ink: #12101c;
+  --violet-0: #1a0540;
+  --violet-2: #8a3df0;
+  --azure-0: #03163a;
+  --azure-1: #0a3b94;
+  --azure-2: #1f7bff;
+  --ember-hot: #ffb347;
+  --wine: #5e0d3b;
+  --line: rgba(255,255,255,.14);
+  --muted: rgba(255,255,255,.62);
+  --font-display: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--ink); color: #fff;
+  font-family: var(--font-display); font-size: 16px; line-height: 1.5;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ember-hot); outline-offset: 3px; }
+h1, h2, h3, p { margin: 0; text-wrap: balance; }
+.mono { font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; font-size: 11px; }
+.wrap { width: 100%; max-width: 1280px; margin-inline: auto; padding-inline: 20px; }
+html[data-side="dev"] .sd-biz { display: none !important; }
+html[data-side="biz"] .sd-dev { display: none !important; }
+
+/* ---------- pinned track + stage ---------- */
+.track { position: relative; height: calc(var(--len, 2) * 100vh); height: calc(var(--len, 2) * 100svh); }
+.stick {
+  position: sticky; top: 8px; margin: 8px; border-radius: 30px; overflow: hidden; isolation: isolate;
+  height: calc(100vh - 16px); height: calc(100svh - 16px); min-height: 560px;
+}
+
+/* ---------- nav ---------- */
+.nav {
+  position: fixed; z-index: 50; top: calc(14px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 4px; padding: 6px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-radius: 999px; box-shadow: 0 8px 30px rgba(0,0,0,.25); color: var(--paper-ink);
+  max-width: calc(100% - 24px);
+}
+.nav .logo { display: grid; place-items: center; width: 32px; height: 32px; flex: none; }
+.nav .logo svg { width: 16px; height: 16px; }
+.nav a.l { padding: 7px 12px; font-size: 13px; font-weight: 500; border-radius: 999px; transition: background .2s; white-space: nowrap; }
+.nav a.l:hover, .nav a.l.on { background: rgba(18,16,28,.08); }
+.nav .seg { display: flex; background: rgba(18,16,28,.08); border-radius: 999px; padding: 3px; margin-left: 2px; }
+.nav .seg button { border: 0; background: transparent; color: inherit; padding: 6px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; transition: background .25s, color .25s; }
+.nav .seg button[aria-pressed="true"] { background: var(--paper-ink); color: #fff; }
+.nav .hello { font-family: inherit; color: inherit; background: transparent; border: 1px solid rgba(18,16,28,.2); padding: 7px 14px; font-size: 13px; font-weight: 600; border-radius: 999px; white-space: nowrap; }
+.scrollhint { position: fixed; z-index: 40; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); translate: -50% 0; display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 999px; background: rgba(10,6,25,.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.2); color: #fff; transition: opacity .4s; pointer-events: none; }
+.scrollhint i { width: 14px; height: 22px; border: 1.5px solid #fff; border-radius: 8px; position: relative; }
+.scrollhint i::after { content: ""; position: absolute; left: 50%; top: 4px; width: 2px; height: 5px; margin-left: -1px; border-radius: 2px; background: #fff; animation: wheel 1.6s ease-in-out infinite; }
+@keyframes wheel { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(8px); } }
+.veil { position: fixed; inset: 0; z-index: 60; background: var(--ink); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.veil.on { opacity: 1; pointer-events: auto; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 11px 20px;
+  font-size: 14px; font-weight: 600; border: 1px solid transparent; transition: transform .2s, background .2s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn.light { background: #fff; color: var(--paper-ink); }
+.btn.ghost { border-color: rgba(255,255,255,.35); color: #fff; background: rgba(255,255,255,.06); }
+.btn.dark { background: var(--paper-ink); color: #fff; }
+
+/* ---------- 0. gate: pick a side ---------- */
+.gate { position: relative; margin: 8px; height: calc(100vh - 16px); height: calc(100svh - 16px); min-height: 560px; border-radius: 30px; overflow: hidden; display: flex; isolation: isolate; background: var(--ink); }
+.half {
+  flex: 1 1 0; min-width: 0; border: 0; padding: clamp(22px, 4vw, 64px); text-align: left; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; transition: flex-grow .65s cubic-bezier(.2,.8,.2,1); color: inherit;
+}
+.half:hover, .half:focus-visible { flex-grow: 1.35; }
+.half.dev {
+  color: #fff; animation: inL .9s cubic-bezier(.2,.8,.2,1) both;
+  background:
+    radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    radial-gradient(80% 60% at 30% 100%, rgba(185,140,255,.8), transparent 70%),
+    linear-gradient(180deg, var(--violet-0), #3a118f);
+}
+.half.biz {
+  color: #06214d; animation: inR .9s cubic-bezier(.2,.8,.2,1) both;
+  background:
+    repeating-radial-gradient(circle at 80% 18%, rgba(10,59,148,.16) 0 1.5px, transparent 1.5px 26px),
+    radial-gradient(70% 60% at 70% 100%, rgba(80,170,255,.6), transparent 70%),
+    linear-gradient(180deg, #f0f5fc, #cfe1fa);
+}
+@keyframes inL { from { transform: translateX(-8%); opacity: 0; } }
+@keyframes inR { from { transform: translateX(8%); opacity: 0; } }
+.g-top { opacity: .75; }
+.g-word { font-size: clamp(46px, 9vw, 150px); font-weight: 600; letter-spacing: -.05em; line-height: .9; }
+.g-sub { max-width: 34ch; font-size: 15px; line-height: 1.45; opacity: .78; }
+.g-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 4px; }
+.g-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.g-tags i { font-style: normal; font-size: 12px; padding: 4px 11px; border-radius: 999px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.2); }
+.half.biz .g-tags i { background: rgba(6,33,77,.07); border-color: rgba(6,33,77,.18); }
+.g-go { flex: none; width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: #12101c; font-size: 20px; transition: transform .3s; }
+.half.biz .g-go { background: #06214d; color: #fff; }
+.half:hover .g-go { transform: translateX(6px); }
+.cur { display: none; position: absolute; top: clamp(70px, 10vh, 96px); left: clamp(22px, 4vw, 64px); padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 10px; }
+.half.biz .cur { background: rgba(6,33,77,.1); }
+.half.on .cur { display: inline-block; }
+.badge { position: absolute; z-index: 3; left: 50%; top: 44%; translate: -50% -50%; display: grid; justify-items: center; gap: 10px; pointer-events: none; transition: left .65s cubic-bezier(.2,.8,.2,1); }
+.badge i { width: 84px; height: 84px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+.badge svg { width: 30px; height: 30px; }
+.badge .mono { color: #fff; mix-blend-mode: difference; white-space: nowrap; }
+.gate:has(.half.dev:hover) .badge, .gate:has(.half.dev:focus-visible) .badge { left: 57.4%; }
+.gate:has(.half.biz:hover) .badge, .gate:has(.half.biz:focus-visible) .badge { left: 42.6%; }
+
+/* ---------- hero ---------- */
+.hero {
+  background:
+    radial-gradient(90% 55% at 70% 108%, rgba(185,140,255,.85) 0%, rgba(138,61,240,.35) 40%, transparent 70%),
+    radial-gradient(60% 50% at 10% 0%, rgba(138,61,240,.55), transparent 70%),
+    linear-gradient(180deg, var(--violet-0) 0%, #35108a 55%, #5a1ccc 100%);
+  display: flex; align-items: center; padding-top: 70px;
+}
+.hero.t-biz {
+  background:
+    radial-gradient(90% 55% at 70% 108%, rgba(100,195,255,.85) 0%, rgba(31,123,255,.35) 40%, transparent 70%),
+    radial-gradient(60% 50% at 10% 0%, rgba(31,123,255,.5), transparent 70%),
+    linear-gradient(180deg, var(--azure-0) 0%, var(--azure-1) 58%, #0f66e0 100%);
+}
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 48px; align-items: center; }
+.hero h1 { font-size: clamp(46px, 7vw, 100px); line-height: .96; font-weight: 600; letter-spacing: -.035em; }
+.hero h1 .dim { color: rgba(255,255,255,.5); display: block; }
+.hero .lead { margin-top: 26px; max-width: 460px; color: rgba(255,255,255,.78); font-size: 15.5px; }
+.hero .actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
+.trust { margin-top: 30px; display: flex; align-items: center; gap: 12px; font-size: 13px; color: rgba(255,255,255,.7); }
+.avs { display: flex; }
+.avs i { width: 26px; height: 26px; border-radius: 50%; margin-left: -7px; border: 2px solid #3a1291; display: grid; place-items: center; font: 600 10px var(--font-display); font-style: normal; color: #fff; }
+.t-biz .avs i { border-color: #0a3b94; }
+.avs i:first-child { margin-left: 0; }
+.gw { will-change: transform; }
+.glass {
+  position: relative; border-radius: 24px; padding: 18px; min-height: 340px; display: flex; flex-direction: column; justify-content: space-between;
+  background: linear-gradient(160deg, rgba(120,80,210,.55), rgba(70,30,150,.5));
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: 0 40px 80px rgba(10,0,40,.5), inset 0 1px 0 rgba(255,255,255,.3);
+  transform: perspective(900px) rotateY(var(--ry, -8deg)) rotateX(var(--rx, 4deg)); transition: transform .15s ease-out;
+  overflow: hidden;
+}
+.t-biz .glass { background: linear-gradient(160deg, rgba(40,130,255,.5), rgba(10,60,160,.55)); box-shadow: 0 40px 80px rgba(0,10,40,.5), inset 0 1px 0 rgba(255,255,255,.3); }
+.glass::before { content: ""; position: absolute; width: 260px; height: 260px; border-radius: 50%; left: 50%; top: 22%; translate: -50% 0;
+  background: radial-gradient(circle, rgba(220,190,255,.95), rgba(138,61,240,.35) 50%, transparent 70%); filter: blur(8px); animation: breathe 5s ease-in-out infinite; }
+.t-biz .glass::before { background: radial-gradient(circle, rgba(190,225,255,.95), rgba(31,123,255,.35) 50%, transparent 70%); }
+.glass > * { position: relative; }
+.glass .top { display: flex; justify-content: space-between; font-size: 11px; }
+.pill { padding: 4px 9px; border-radius: 999px; background: rgba(0,0,0,.28); font-family: var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.glass .live { color: #ff9ab8; }
+.t-biz .glass .live { color: #9fe3ff; }
+.glass .box { background: rgba(10,0,40,.4); border: 1px solid rgba(255,255,255,.16); border-radius: 16px; padding: 14px; }
+.t-biz .glass .box { background: rgba(0,15,50,.42); }
+.glass .box b { display: block; font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+.glass .box span { font-size: 12.5px; color: rgba(255,255,255,.7); }
+.segs { display: flex; gap: 5px; margin-top: 12px; }
+.segs i { flex: 1; height: 4px; border-radius: 4px; background: rgba(255,255,255,.2); }
+.segs i.on { background: #fff; }
+.wash { position: absolute; inset: 0; z-index: 5; background: var(--paper); opacity: 0; pointer-events: none; }
+@keyframes breathe { 50% { transform: scale(1.12); opacity: .85; } }
+
+/* ---------- card rail ---------- */
+.rail { background: var(--paper); color: var(--paper-ink); }
+.rail.t-biz { background: #eaf1fb; }
+.marq { position: absolute; inset: 0; display: flex; align-items: center; pointer-events: none; }
+.marq p { white-space: nowrap; font-size: clamp(90px, 15vw, 230px); font-weight: 600; letter-spacing: -.045em; line-height: 1; will-change: transform; }
+.marq p em { font-style: normal; color: rgba(18,16,28,.16); }
+.stage { position: absolute; inset: 0; perspective: 1400px; }
+.card3d {
+  --cw: 280px;
+  position: absolute; left: 50%; top: 50%; width: var(--cw); height: calc(var(--cw) * 1.4); margin: calc(var(--cw) * -.8) 0 0 calc(var(--cw) * -.5);
+  border-radius: 22px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; color: #fff;
+  box-shadow: 0 30px 60px rgba(30,10,80,.28); will-change: transform; overflow: hidden;
+}
+.card3d .t { display: flex; justify-content: space-between; font-size: 11px; opacity: .85; }
+.card3d h3 { font-size: 24px; font-weight: 600; letter-spacing: -.02em; line-height: 1.05; }
+.card3d p { font-size: 13px; opacity: .8; margin-top: 6px; line-height: 1.4; }
+.c-veng { background: radial-gradient(70% 50% at 50% 40%, #7a1fa8, transparent 70%), radial-gradient(40% 30% at 50% 35%, rgba(255,60,60,.6), transparent 70%), #14091f; }
+.c-zap { background: radial-gradient(80% 60% at 40% 30%, #46d6c1, transparent 70%), linear-gradient(160deg, #0c3a46, #05161c); }
+.c-scent { background: radial-gradient(80% 60% at 60% 30%, #ffc9a8, transparent 70%), linear-gradient(160deg, #b0407a, #4d1233); }
+.c-ml { background: conic-gradient(from 210deg at 50% 38%, #f2f2f6, #7d7a92, #e8e6f0, #4b4960, #f2f2f6); color: #15131f; }
+.c-aie { background: radial-gradient(80% 60% at 50% 25%, #6aa4ff, transparent 70%), linear-gradient(160deg, #1a3b8e, #0a1233); }
+.c-mint { background: radial-gradient(80% 60% at 45% 28%, #6ee7d0, transparent 70%), linear-gradient(160deg, #0d4a5a, #04161d); }
+.c-gold { background: radial-gradient(80% 60% at 55% 28%, #ffd27a, transparent 70%), linear-gradient(160deg, #b8620f, #3d1a04); }
+.cap { position: absolute; z-index: 30; left: 0; right: 0; bottom: 112px; text-align: center; display: grid; gap: 4px; }
+.cap b { font-size: clamp(22px, 3vw, 34px); font-weight: 600; letter-spacing: -.03em; }
+.cap .mono { color: rgba(18,16,28,.55); }
+.rail .go { position: absolute; z-index: 31; bottom: 40px; left: 50%; translate: -50% 0; }
+
+/* ---------- beyond ---------- */
+.beyond { background: var(--ink); }
+.beyond .big { position: absolute; font-size: clamp(56px, 11.5vw, 180px); font-weight: 500; letter-spacing: -.045em; line-height: .95; white-space: nowrap; will-change: transform; }
+.beyond .b1 { left: clamp(20px, 4vw, 64px); top: 13%; }
+.beyond .b2 { right: clamp(20px, 4vw, 64px); bottom: 9%; color: rgba(255,255,255,.55); }
+.beyond .blurb { position: absolute; z-index: 2; left: clamp(20px, 4vw, 64px); top: 44%; max-width: 330px; font-size: 14px; color: rgba(255,255,255,.55); }
+.beyond .blurb p + p { margin-top: 14px; }
+.starw { position: absolute; left: 50%; top: 50%; translate: -50% -52%; width: clamp(130px, 17vw, 230px); aspect-ratio: 1; will-change: transform; }
+.star { width: 100%; height: 100%; filter: drop-shadow(0 0 28px rgba(255,255,255,.85)) drop-shadow(0 0 90px rgba(150,100,255,.8)); animation: breathe 4.5s ease-in-out infinite; display: block; }
+.t-biz .star { filter: drop-shadow(0 0 28px rgba(255,255,255,.85)) drop-shadow(0 0 90px rgba(60,150,255,.9)); }
+.stats { position: absolute; z-index: 2; right: clamp(20px, 4vw, 64px); top: 16%; text-align: right; display: grid; gap: 22px; }
+.stats b { display: block; font-size: 30px; font-weight: 500; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stats span { font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.45); }
+
+/* ---------- work strip ---------- */
+.work { background: var(--ink); display: flex; flex-direction: column; justify-content: center; gap: 28px; padding-top: 60px; }
+.work .head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.work h2 { font-size: clamp(30px, 4.2vw, 56px); font-weight: 600; letter-spacing: -.035em; line-height: 1; }
+.work .hint { color: var(--muted); font-size: 13px; }
+.wview { overflow: hidden; width: 100%; }
+.wstrip { display: flex; gap: 16px; padding: 0 20px; position: relative; width: max-content; will-change: transform; }
+.proj {
+  position: relative; flex: 0 0 min(340px, 78vw); height: min(460px, 56svh); min-height: 380px; border-radius: 22px; padding: 18px;
+  display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border: 1px solid var(--line);
+  background: var(--ink-2); will-change: transform;
+}
+.proj .art { position: absolute; inset: 0; opacity: .95; will-change: transform; }
+.proj > * { position: relative; }
+.proj > .art { position: absolute; }
+.proj .meta { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,.7); }
+.proj h3 { font-size: 34px; font-weight: 600; letter-spacing: -.03em; line-height: 1; }
+.proj p { margin-top: 10px; font-size: 13.5px; color: rgba(255,255,255,.75); max-width: 30ch; }
+.proj .foot { display: flex; justify-content: space-between; align-items: end; gap: 10px; flex-wrap: wrap; }
+.proj .lk { display: flex; gap: 6px; flex-wrap: wrap; }
+.proj .more { font-size: 12px; padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.3); white-space: nowrap; background: rgba(0,0,0,.25); }
+.proj .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.proj .tags span { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.12); }
+.a-veng { background: radial-gradient(60% 45% at 50% 28%, rgba(255,70,70,.45), transparent 70%), radial-gradient(90% 60% at 50% 20%, #5a1d86, transparent 75%), #0c0614; }
+.a-zap { background: radial-gradient(70% 50% at 50% 28%, rgba(70,214,193,.55), transparent 70%), linear-gradient(180deg, #0a2e38, #050d11); }
+.a-scent { background: radial-gradient(70% 50% at 55% 28%, rgba(255,190,160,.6), transparent 70%), linear-gradient(180deg, #8c2f60, #25091a); }
+.a-ml { background: repeating-radial-gradient(circle at 50% 30%, rgba(160,190,255,.25) 0 2px, transparent 2px 14px), radial-gradient(60% 50% at 50% 30%, #3a4a8a, transparent 75%), #070a16; }
+.a-aie { background: radial-gradient(70% 50% at 50% 28%, rgba(106,164,255,.6), transparent 70%), linear-gradient(180deg, #17348a, #060b22); }
+.a-mint { background: radial-gradient(70% 50% at 50% 28%, rgba(110,231,208,.55), transparent 70%), linear-gradient(180deg, #0d4a5a, #04161d); }
+.a-gold { background: radial-gradient(70% 50% at 55% 28%, rgba(255,210,122,.6), transparent 70%), linear-gradient(180deg, #a85a0e, #2a1203); }
+.a-ufo { background: radial-gradient(60% 45% at 50% 28%, rgba(120,220,255,.5), transparent 70%), repeating-radial-gradient(circle at 20% 20%, rgba(255,255,255,.18) 0 1px, transparent 1px 38px), linear-gradient(180deg, #0b2a4a, #040a16); }
+.a-shoot { background: radial-gradient(60% 45% at 50% 28%, rgba(255,140,70,.55), transparent 70%), linear-gradient(180deg, #7a1d12, #1a0705); }
+.a-form { background: radial-gradient(70% 50% at 50% 28%, rgba(150,120,255,.6), transparent 70%), linear-gradient(180deg, #2b1a7a, #0a0620); }
+.a-clover { background: radial-gradient(70% 50% at 50% 28%, rgba(120,230,120,.5), transparent 70%), linear-gradient(180deg, #0f5a2a, #04170b); }
+.a-fin { background: radial-gradient(70% 50% at 50% 28%, rgba(255,230,140,.4), transparent 70%), linear-gradient(180deg, #3b3f52, #0c0d14); }
+.a-hive { background: radial-gradient(70% 50% at 50% 28%, rgba(255,200,80,.55), transparent 70%), linear-gradient(180deg, #5a3a0a, #150d03); }
+.a-book { background: radial-gradient(70% 50% at 50% 28%, rgba(255,120,160,.5), transparent 70%), linear-gradient(180deg, #5a1238, #14040c); }
+.proj.last { align-items: flex-start; justify-content: center; gap: 16px; background: #14121d; }
+.proj.last h3 { font-size: 30px; }
+.pbar { height: 2px; background: rgba(255,255,255,.14); border-radius: 2px; overflow: hidden; }
+.pbar i { display: block; height: 100%; background: #fff; transform-origin: left; transform: scaleX(0); }
+
+/* ---------- stack ---------- */
+.stack { background: radial-gradient(60% 60% at 50% 50%, #17122a, var(--ink) 70%); display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 60px; }
+.stack.t-biz { background: radial-gradient(60% 60% at 50% 50%, #0d2247, var(--ink) 70%); }
+.stack h2 { font-size: clamp(34px, 5vw, 66px); font-weight: 500; letter-spacing: -.035em; line-height: 1.02; will-change: transform; }
+.stack h2 span { color: rgba(255,255,255,.5); }
+.stack .sub { margin: 16px auto 0; max-width: 420px; color: var(--muted); font-size: 14.5px; }
+.chips { margin: 38px auto 0; max-width: 960px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.chip {
+  padding: 10px 18px; border-radius: 14px; font-size: 14px; font-weight: 500; will-change: transform;
+  background: linear-gradient(160deg, rgba(255,255,255,.12), rgba(255,255,255,.03)); border: 1px solid var(--line);
+  animation: bob 6s ease-in-out infinite; animation-delay: var(--d, 0s);
+}
+.chip small { font-family: var(--font-mono); font-size: 9.5px; color: rgba(255,255,255,.45); margin-left: 8px; letter-spacing: .1em; text-transform: uppercase; }
+@keyframes bob { 50% { translate: 0 -7px; } }
+
+/* ---------- CTA ---------- */
+.finale {
+  background: radial-gradient(70% 60% at 75% 80%, rgba(185,140,255,.7), transparent 70%), linear-gradient(180deg, #2a0a68, #5a1ccc 70%, #3a1291);
+  display: flex; align-items: center; padding-top: 50px;
+}
+.finale.t-biz { background: radial-gradient(70% 60% at 75% 80%, rgba(100,195,255,.7), transparent 70%), linear-gradient(180deg, #04204f, #0d58c9 70%, #0a3b94); }
+.finale .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 30px; align-items: center; }
+.finale h2 { font-size: clamp(44px, 6.4vw, 92px); line-height: .96; letter-spacing: -.04em; font-weight: 600; }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; margin-bottom: -.12em; }
+.w > span { display: inline-block; will-change: transform; }
+.finale p { margin-top: 22px; max-width: 380px; color: rgba(255,255,255,.78); font-size: 15px; }
+.finale .btn { margin-top: 26px; }
+.chrome-wrap { justify-self: center; width: min(440px, 80vw, 52svh); aspect-ratio: 1; perspective: 900px; animation: floaty 7s ease-in-out infinite; filter: drop-shadow(0 30px 40px rgba(10,0,50,.55)); }
+.chrome { width: 100%; height: 100%; display: block; will-change: transform; }
+.t-biz .chrome { filter: hue-rotate(-62deg) saturate(1.3); }
+@keyframes floaty { 50% { translate: 0 -14px; } }
+
+
+
+/* ---------- contact: footer + dialog ---------- */
+.foot2 { padding: 8px; }
+.fbox { border-radius: 30px; border: 1px solid var(--line); padding: clamp(56px, 9vw, 110px) 0 36px; text-align: center;
+  background: radial-gradient(60% 80% at 50% 0%, rgba(255,140,40,.25), transparent 70%), #0d0b16; }
+.fmail { margin-top: 14px; background: none; border: 0; color: #fff; font-size: clamp(34px, 7vw, 96px); font-weight: 600; letter-spacing: -.045em; line-height: 1; border-bottom: 2px solid rgba(255,255,255,.25); padding: 0 0 6px; transition: border-color .3s, color .3s; }
+.fmail:hover { border-color: var(--ember-hot); color: var(--ember-hot); }
+.soc { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 34px; }
+.soc a, .soc .pill { color: inherit; font-family: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); font-size: 14px; transition: background .25s, color .25s; }
+.soc a:hover, .soc .pill:hover { background: #fff; color: var(--paper-ink); }
+.soc svg { width: 16px; height: 16px; fill: currentColor; }
+.foot2 .copy { margin-top: 38px; color: rgba(255,255,255,.4); }
+.mail { width: min(480px, calc(100% - 28px)); border: 1px solid var(--line); border-radius: 26px; background: #14111f; color: #fff; padding: 28px 24px 22px; }
+.mail::backdrop { background: rgba(5,4,10,.7); backdrop-filter: blur(6px); }
+.mail h3 { font-size: 30px; font-weight: 600; letter-spacing: -.03em; margin: 6px 0 16px; }
+.mail label { display: grid; gap: 6px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.mail input, .mail textarea { font: inherit; font-size: 15px; color: #fff; background: rgba(255,255,255,.07); border: 1px solid var(--line); border-radius: 14px; padding: 11px 14px; resize: vertical; }
+.mail input:focus, .mail textarea:focus { outline: 2px solid var(--ember-hot); outline-offset: 1px; }
+.mx { position: absolute; top: 14px; right: 16px; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: #fff; font-size: 20px; line-height: 1; }
+.mact { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+.mact .btn { padding: 10px 16px; font-size: 14px; }
+.mnote { margin-top: 12px; font-size: 12px; color: var(--muted); }
+
+/* ---------- achievements (shared page) ---------- */
+.ach { position: relative; padding: 8px; }
+.achbox { border-radius: 30px; overflow: hidden; isolation: isolate; position: relative; padding: clamp(84px, 11vw, 130px) 0 clamp(56px, 8vw, 96px);
+  background: radial-gradient(60% 40% at 15% 0%, rgba(138,61,240,.28), transparent 70%), radial-gradient(50% 40% at 90% 10%, rgba(31,123,255,.22), transparent 70%), radial-gradient(50% 40% at 60% 100%, rgba(255,179,71,.14), transparent 70%), #0d0b16; border: 1px solid var(--line); }
+.ach h2 { font-size: clamp(40px, 7vw, 104px); font-weight: 600; letter-spacing: -.045em; line-height: .95; }
+.ach h2 span { color: rgba(255,255,255,.5); }
+.ach .lede { margin-top: 18px; max-width: 52ch; color: var(--muted); font-size: 15px; }
+.topsk { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 22px; }
+.topsk .mono { color: var(--muted); margin-right: 4px; }
+.topsk i { font-style: normal; font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.05); }
+.lilink { display: inline-block; margin-top: 16px; font-size: 14px; color: var(--ember-hot); border-bottom: 1px solid rgba(255,179,71,.4); }
+.achtabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 34px 0 26px; }
+.achtabs button { border: 1px solid var(--line); background: rgba(255,255,255,.04); color: #fff; border-radius: 999px; padding: 8px 16px; font-size: 14px; display: inline-flex; gap: 8px; align-items: center; transition: background .25s, color .25s, border-color .25s; }
+.achtabs button small { font-family: var(--font-mono); font-size: 11px; opacity: .6; }
+.achtabs button:hover { border-color: rgba(255,255,255,.4); }
+.achtabs button[aria-pressed="true"] { background: #fff; color: var(--paper-ink); border-color: #fff; }
+.achgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); gap: 14px; }
+.ac { --c: #8a3df0; position: relative; display: flex; flex-direction: column; gap: 10px; min-height: 210px; padding: 20px; border-radius: 22px; border: 1px solid var(--line); background: linear-gradient(160deg, color-mix(in srgb, var(--c) 30%, #0d0b16), #0d0b16 70%); overflow: hidden;
+  opacity: 0; transform: translate3d(0, 28px, 0) scale(.97); transition: opacity .7s ease, transform .8s cubic-bezier(.2,.7,.2,1), border-color .3s; transition-delay: calc(var(--i, 0) * 70ms); }
+.ac.in { opacity: 1; transform: none; }
+.ac:hover { border-color: color-mix(in srgb, var(--c) 70%, #fff); }
+.ac[data-c="aiesec"] { --c: #1f7bff; }
+.ac[data-c="other"] { --c: #ffb347; }
+.ac .top { display: flex; justify-content: space-between; gap: 10px; color: rgba(255,255,255,.7); }
+.ac .top i { font-style: normal; display: inline-flex; align-items: center; gap: 7px; }
+.ac .top i::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); box-shadow: 0 0 12px var(--c); }
+.ac h3 { font-size: 26px; font-weight: 600; letter-spacing: -.03em; line-height: 1.05; margin-top: auto; }
+.ac .iss { font-size: 13.5px; color: rgba(255,255,255,.75); }
+.ac .dsc { font-size: 13px; color: rgba(255,255,255,.55); }
+.ac .acl { align-self: flex-start; margin-top: 4px; font-size: 12px; padding: 7px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,.3); background: rgba(0,0,0,.25); }
+.ac.ghost { background: transparent; border-style: dashed; align-items: flex-start; justify-content: center; color: var(--muted); }
+.ac.ghost h3 { margin-top: 0; font-size: 20px; color: #fff; }
+.achempty { grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 22px; }
+.rvh { opacity: 0; transform: translate3d(0, 22px, 0); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.7,.2,1); }
+.rvh.in { opacity: 1; transform: none; }
+.static .ac, .static .rvh { opacity: 1; transform: none; transition: none; }
+
+/* ---------- about (cinder) ---------- */
+.about {
+  min-height: 620px;
+  background:
+    radial-gradient(70% 70% at 62% 30%, #ffb347 0%, rgba(244,144,42,.0) 62%),
+    radial-gradient(60% 80% at 0% 100%, #7a2406 0%, transparent 70%),
+    linear-gradient(180deg, #f08a1c 0%, #c8530c 55%, #8a2d07 100%);
+  color: #fff;
+}
+.about .giant {
+  position: absolute; z-index: 1; left: 0; right: 0; top: 34%; padding-inline: clamp(8px, 1.4vw, 24px);
+  display: flex; justify-content: space-between; font-weight: 600; letter-spacing: -.055em; line-height: .82;
+  font-size: clamp(110px, 20vw, 320px);
+  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -8px), 0);
+}
+.about .giant span { display: block; will-change: transform; background: linear-gradient(180deg, #fff 35%, rgba(255,232,205,.55)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.about .giant span:first-child { transform-origin: left center; }
+.about .giant span:last-child { transform-origin: right center; }
+.portrait { position: absolute; z-index: 2; left: 50%; top: 4%; height: 150%; aspect-ratio: 990 / 1650; pointer-events: none;
+  transform: translate3d(calc(-50% + var(--px, 0) * 10px), calc(var(--py, 0) * 5px + var(--pty, 0) * 1%), 0) scale(var(--ps, 1)); transform-origin: 50% 20%; }
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; filter: drop-shadow(0 30px 50px rgba(60,10,0,.45)); }
+.portrait .lens {
+  position: absolute; inset: 0; z-index: 2;
+  -webkit-mask-image: radial-gradient(circle 105px at var(--mx, -400px) var(--my, -400px), #000 0 50%, transparent 100%);
+          mask-image: radial-gradient(circle 105px at var(--mx, -400px) var(--my, -400px), #000 0 50%, transparent 100%);
+}
+.portrait .lens img { filter: sepia(1) saturate(6) hue-rotate(-42deg) brightness(.95) contrast(1.25); opacity: .8; }
+.portrait .glow { position: absolute; z-index: 3; left: var(--mx, -400px); top: var(--my, -400px); width: 170px; height: 170px; translate: -50% -50%; border-radius: 50%; mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(255,40,30,.4), rgba(255,50,40,.0) 68%); }
+.about .ui { position: absolute; z-index: 5; will-change: transform; }
+.about .al { left: clamp(18px, 2.6vw, 44px); top: 112px; max-width: 290px; }
+.about .al h3 { font-size: 15px; line-height: 1.25; font-weight: 600; letter-spacing: .01em; text-transform: uppercase; }
+.about .al p { margin-top: 10px; font-size: 12px; line-height: 1.5; color: rgba(255,240,225,.8); max-width: 260px; }
+.about .al p b { color: #fff; }
+.readmore { margin-top: 16px; background: var(--wine); color: #fff; border: 0; border-radius: 999px; padding: 8px 16px; font-size: 12px; font-weight: 600; }
+.about .ar { right: clamp(18px, 2.6vw, 44px); top: 108px; text-align: right; max-width: 340px; }
+.about .ar h2 { font-size: clamp(34px, 3.6vw, 54px); line-height: .95; font-weight: 500; letter-spacing: -.02em; text-transform: uppercase; }
+.about .ar p { margin-top: 12px; font-size: 12px; line-height: 1.55; color: rgba(255,240,225,.82); }
+.about .ar p b { color: #fff; font-weight: 700; }
+.about .chips2 { left: clamp(18px, 2.6vw, 44px); bottom: 26px; display: flex; gap: 10px; }
+.stat { min-width: 74px; padding: 9px 14px; border-radius: 14px; background: rgba(255,255,255,.16); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.2); }
+.stat.wht { background: rgba(255,255,255,.92); color: #2a1206; }
+.stat small { display: block; font-size: 9.5px; letter-spacing: .04em; opacity: .75; }
+.stat b { font-size: 24px; font-weight: 500; letter-spacing: -.02em; line-height: 1.1; }
+.about .partner { right: clamp(18px, 2.6vw, 44px); bottom: 26px; width: 300px; padding: 14px; border-radius: 18px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: grid; gap: 12px; }
+.partner .row { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 13px; line-height: 1.25; }
+.partner .go { width: 30px; height: 30px; flex: none; border-radius: 50%; background: var(--wine); display: grid; place-items: center; border: 0; color: #fff; }
+.partner .row2 { display: flex; align-items: center; gap: 10px; font-size: 11px; color: rgba(255,240,225,.85); }
+.partner .avs i { border-color: #b4470d; }
+.panel {
+  position: absolute; z-index: 6; left: clamp(18px, 2.6vw, 44px); top: 300px; width: 290px; padding: 16px; border-radius: 18px;
+  background: rgba(40,10,0,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.2);
+  font-size: 12.5px; line-height: 1.5;
+}
+.panel ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.panel li b { display: block; font-size: 13px; }
+.panel li span { color: rgba(255,240,225,.7); }
+.toast { position: absolute; z-index: 7; left: 50%; bottom: 96px; translate: -50% 0; padding: 8px 14px; border-radius: 999px; background: #fff; color: #2a1206; font-size: 12px; font-weight: 600; }
+
+/* ---------- phones ---------- */
+@media (max-width: 900px) {
+  .track[data-free-m] { height: auto; }
+  .track[data-free-m] > .stick { position: relative; top: auto; height: auto; }
+  .gate { flex-direction: column; }
+  .half { padding: 20px; justify-content: flex-end; gap: 8px; }
+  .half:hover, .half:focus-visible { flex-grow: 1; }
+  .g-word { font-size: clamp(44px, 16vw, 78px); }
+  .g-sub { font-size: 13px; }
+  .g-top { display: none; }
+  .g-go { width: 38px; height: 38px; }
+  .cur { top: 74px; left: 20px; }
+  .half.biz .cur { top: 16px; }
+  .badge { top: 50%; }
+  .badge i { width: 64px; height: 64px; }
+  .badge svg { width: 24px; height: 24px; }
+  .gate:has(.half.dev:hover) .badge, .gate:has(.half.biz:hover) .badge, .gate:has(.half.dev:focus-visible) .badge, .gate:has(.half.biz:focus-visible) .badge { left: 50%; }
+  .hero { display: block; padding-block: 112px 56px; }
+  .hero .wrap, .finale .wrap { grid-template-columns: minmax(0, 1fr); }
+  .finale { padding-top: 70px; }
+  .finale .wrap { gap: 6px; }
+  .glass { min-height: 280px; margin-top: 40px; }
+  .card3d { --cw: 215px; }
+  .beyond .blurb { top: 29%; max-width: 270px; }
+  .stats { top: auto; bottom: 25%; left: 20px; right: auto; text-align: left; grid-template-columns: repeat(3, auto); gap: 22px; }
+  .stats b { font-size: 24px; }
+  .beyond .b2 { bottom: 7%; }
+  .starw { top: 63%; }
+  .chrome-wrap { width: min(60vw, 34svh); }
+  .about { height: 1070px; }
+  .about .giant { top: 92px; font-size: 22vw; }
+  .portrait { top: 150px; height: auto; width: 86vw; -webkit-mask-image: linear-gradient(#000 48%, transparent 80%); mask-image: linear-gradient(#000 48%, transparent 80%); }
+  .about .al { display: none; }
+  .about .ar { left: 20px; right: 20px; top: auto; bottom: 256px; text-align: left; max-width: none; }
+  .about .ar p { max-width: 460px; }
+  .about .chips2 { bottom: 140px; }
+  .about .partner { left: 20px; right: 20px; width: auto; bottom: 20px; }
+  .panel { top: auto; bottom: 360px; left: 20px; right: 20px; width: auto; }
+  .chips { gap: 8px; margin-top: 26px; }
+  .chip { padding: 8px 13px; font-size: 13px; }
+  .nav a.l.hide-s, .nav .hello { display: none; }
+}
+
+/* ---------- reduced motion ---------- */
+.static .track { height: auto; }
+.static .stick { position: relative; top: auto; height: auto; min-height: 680px; }
+.static .hero.stick { min-height: 0; padding-block: 110px 60px; }
+.static .wview { overflow-x: auto; }
+.static .about { height: 860px; }
+.static .scrollhint { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .chip, .star, .glass::before, .chrome-wrap, .half { animation: none; }
+}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main">
+  <a class="logo" href="#top" aria-label="Yan, top of page">
+    <svg viewBox="0 0 100 100"><path fill="#12101c" d="M50 0C52 30 70 48 100 50 70 52 52 70 50 100 48 70 30 52 0 50 30 48 48 30 50 0Z"/></svg>
+  </a>
+  <a class="l" href="#rail">Showcase</a>
+  <a class="l" href="#work">Work</a>
+  <a class="l hide-s" href="#stack">Stack</a>
+  <a class="l hide-s" href="#achievements">Awards</a>
+  <a class="l" href="#about">About</a>
+  <div class="seg" role="group" aria-label="Switch side">
+    <button type="button" data-pick="dev" aria-pressed="true">Dev</button>
+    <button type="button" data-pick="biz" aria-pressed="false">Biz</button>
+  </div>
+  <button type="button" class="hello" data-mail>Say hello</button>
+</nav>
+<div class="scrollhint mono" id="hint" aria-hidden="true"><i></i><span>Pick a side or scroll</span></div>
+<div class="veil" id="veil" aria-hidden="true"></div>
+
+<main id="top">
+  <!-- gate: two sides -->
+  <section class="gate" id="gate" aria-label="Choose a side">
+    <button type="button" class="half dev on" data-pick="dev" aria-label="Enter the developer side">
+      <span class="cur mono">Viewing</span>
+      <span class="g-top mono">Games &middot; apps &middot; machine learning</span>
+      <span class="g-word">Developer</span>
+      <span class="g-sub">Thirteen projects: Vengenvise, a Java space shooter, a live form bot and apps in Swift and Flutter.</span>
+      <span class="g-foot"><span class="g-tags"><i>Unity 6</i><i>Swift</i><i>React</i></span><span class="g-go">&rarr;</span></span>
+    </button>
+    <button type="button" class="half biz" data-pick="biz" aria-label="Enter the business side">
+      <span class="cur mono">Viewing</span>
+      <span class="g-top mono">AIESEC &middot; events &middot; marketing</span>
+      <span class="g-word">Business</span>
+      <span class="g-sub">Three years at AIESEC in Assumption University: Team Leader, Vice President of Engage and Vice President of Marketing.</span>
+      <span class="g-foot"><span class="g-tags"><i>AIESEC</i><i>SDGs</i><i>Events</i></span><span class="g-go">&rarr;</span></span>
+    </button>
+    <div class="badge" aria-hidden="true">
+      <i><svg viewBox="0 0 100 100"><path fill="#12101c" d="M50 0C52 30 70 48 100 50 70 52 52 70 50 100 48 70 30 52 0 50 30 48 48 30 50 0Z"/></svg></i>
+      <span class="mono">Yan &middot; pick a side</span>
+    </div>
+  </section>
+
+  <div id="sides"></div>
+
+  <!-- achievements and certificates (shared by both sides) -->
+  <section class="ach" id="achievements" aria-label="Achievements and certificates">
+    <div class="achbox"><div class="wrap">
+      <p class="mono rvh" style="color:var(--muted);margin-bottom:14px">Achievements &middot; certificates</p>
+      <h2 class="rvh">Proof of<br><span>the work</span></h2>
+      <p class="lede rvh">Certificates from tech, AIESEC and beyond.</p>
+      <div class="topsk rvh"><span class="mono">Top skills</span><i>Project management</i><i>Project planning</i><i>Team management</i><i>Team leadership</i></div>
+      <a class="lilink rvh" href="https://www.linkedin.com/in/wai-yan-mya-thaung-270296238/" target="_blank" rel="noopener">See the full profile on LinkedIn &nearr;</a>
+      <div class="achtabs rvh" id="achtabs" role="group" aria-label="Filter achievements"></div>
+      <div class="achgrid" id="achgrid"></div>
+    </div></div>
+  </section>
+
+  <!-- about (shared by both sides): giant name closes in, the portrait rises into place -->
+  <section class="track" id="about" style="--len:2.2" data-kind="about" data-land=".62" data-free-m>
+    <div class="stick about" id="abt" aria-label="About Yan">
+      <div class="giant" aria-hidden="true"><span id="wl">WAI</span><span id="wr">YAN</span></div>
+
+      <div class="portrait" id="portrait">
+        <img src="portrait.png" alt="Yan in a black suit and tie, looking to the side">
+        <div class="lens" aria-hidden="true"><img src="portrait.png" alt=""></div>
+        <div class="glow" aria-hidden="true"></div>
+      </div>
+
+      <div class="ui al" id="al">
+        <h3 class="sd-dev">Building games, systems and stories people can actually use</h3>
+        <h3 class="sd-biz">Planning campaigns and leading teams around real audiences</h3>
+        <p class="sd-dev">From <b>game mechanics</b> to <b>mobile apps</b> and web tools, I like work where code, design and an audience meet.</p>
+        <p class="sd-biz">Three years at AIESEC: <b>Team Leader</b> of Engage, <b>Vice President of Engage</b> and <b>Vice President of Marketing</b>.</p>
+        <button class="readmore" id="readmore" aria-expanded="false" aria-controls="panel">Read more</button>
+      </div>
+      <div class="panel" id="panel" hidden>
+        <ul>
+          <li><b>Assumption University of Thailand</b><span>Information Technology, Data Science &middot; final year</span></li>
+          <li><b>Vice President of Marketing &middot; AIESEC in AU</b><span>2025 &ndash; 2026 &middot; content calendar, CTAs, reports, synergy</span></li>
+          <li><b>Vice President of Engage &middot; AIESEC in AU</b><span>2024 &ndash; 2025 &middot; YouthSpeak Forum, Gift of Christmas, Market Hunt</span></li>
+          <li><b>Team Leader of Engage &middot; AIESEC in AU</b><span>2023 &ndash; 2024 &middot; two six-month terms</span></li>
+          <li><b>Currently</b><span>Vengenvise Level 7, the Zap capstone and a new portfolio</span></li>
+        </ul>
+      </div>
+
+      <div class="ui ar" id="ar">
+        <h2>About<br>me</h2>
+        <p class="sd-dev">I'm <b>Yan</b>, a final-year IT student who builds <b>games, web apps and mobile apps</b>. I care about systems that feel intentional, from a three-hit combo to a navigation flow, and I work best with a team and a deadline.</p>
+        <p class="sd-biz">I'm <b>Yan</b>. I've spent three years at AIESEC in Assumption University leading teams, running <b>SDG events</b> and managing <b>marketing</b>, and I study Data Science, so I plan around a clear goal, a KPI and a report.</p>
+      </div>
+
+      <div class="ui chips2" id="chips2">
+        <div class="stat"><small>AIESEC roles</small><b>3</b></div>
+        <div class="stat wht"><small>Projects shown</small><b class="sd-dev">13</b><b class="sd-biz">5</b></div>
+      </div>
+
+      <div class="ui partner" id="partner">
+        <div class="row"><span>Your next collaborator<br>for games and apps</span><button class="go" id="connect" aria-label="Let's connect">&nearr;</button></div>
+        <div class="row2">
+          <div class="avs" aria-hidden="true"><i style="background:#5e0d3b">V</i><i style="background:#1fb5a0">Z</i><i style="background:#d2457f">S</i></div>
+          <span>Vengenvise &middot; Test Hive &middot; AIESEC</span>
+        </div>
+      </div>
+      <div class="toast" id="toast" hidden></div>
+    </div>
+  </section>
+
+  <footer class="foot2" id="contact">
+    <div class="fbox"><div class="wrap">
+      <p class="mono" style="color:var(--muted)">Let's talk</p>
+      <button type="button" class="fmail" data-mail>Say hello to Yan <span aria-hidden="true">&nearr;</span></button>
+      <div class="soc" id="soc"></div>
+      <p class="copy mono">&copy; 2026 Yan &middot; Bangkok</p>
+    </div></div>
+  </footer>
+</main>
+
+
+<dialog class="mail" id="mail" aria-labelledby="mailh">
+  <button type="button" class="mx" id="mailx" aria-label="Close">&times;</button>
+  <p class="mono" style="color:var(--muted)">Say hello</p>
+  <h3 id="mailh">Write to Wai Yan</h3>
+  <label>Your name<input id="mn" autocomplete="name" placeholder="Your name"></label>
+  <label>Your email<input id="me" type="email" autocomplete="email" placeholder="you@example.com"></label>
+  <label>Message<textarea id="mm" rows="5" placeholder="Hi Yan, I'd like to talk about..."></textarea></label>
+  <div class="mact">
+    <a class="btn light" id="mgm" target="_blank" rel="noopener" href="#">Send with Gmail</a>
+    <a class="btn ghost" id="mapp" target="_blank" rel="noopener" href="#">Send with Outlook</a>
+    <button type="button" class="btn ghost" id="mcopy">Copy address</button>
+  </div>
+  <p class="mnote" id="mnote" aria-live="polite">Opens a ready-to-send draft addressed to Wai Yan. Or copy the address and write from any app.</p>
+</dialog>
+
+<script>
+(function () {
+  // Set your address here to turn the "connect" button into copy-to-clipboard.
+  var EMAIL = "waiyanmt904std@gmail.com";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var root = document.documentElement;
+  if (reduce) root.classList.add("static");
+
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var ease = function (t) { return t * t * (3 - 2 * t); };
+  var lin = function (p, a, b) { return clamp((p - a) / (b - a), 0, 1); };
+  var seg = function (p, a, b) { return ease(lin(p, a, b)); };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var f1 = function (n) { return n.toFixed(1); };
+  var f3 = function (n) { return n.toFixed(3); };
+
+  /* =====================  CONTENT FOR BOTH SIDES  ===================== */
+  var DATA = {
+    dev: {
+      hero: {
+        eyebrow: "Yan &middot; Developer", h1: "Games and apps that", dim: "answer first",
+        lead: "I'm Yan, a final-year IT (Data Science) student in Bangkok. I build games in Unity and Java, and web and mobile apps with React, Swift and Flutter.",
+        av: [["V", "#8a3df0"], ["U", "#1fb5a0"], ["A", "#d2457f"], ["H", "#3a6fe0"]], trust: "13 projects &middot; games &middot; web &middot; mobile",
+        card: { pill: "&#9679; Now building", live: "Live", mono: "Unity 6 &middot; URP &middot; DX12", title: "Vengenvise", sub: "Level 1 largely built, Level 7 in early development", segs: [1, 0, 0, 0, 0, 0, .5, 0], label: "Progress: 8 floors planned, 1 built" }
+      },
+      rail: {
+        marq: ["Code that plays", "Apps that ship", "Design that guides"],
+        cards: [
+          { cls: "c-veng", l: "Game", r: "Unity 6", t: "Vengenvise", p: "Eight floors of dark fantasy, one skeleton warrior." },
+          { cls: "c-aie", l: "Game", r: "Java", t: "UFO with me", p: "A space shooting game written in Java." },
+          { cls: "c-mint", l: "Web", r: "Live", t: "Formbot", p: "A form bot, deployed on Netlify." },
+          { cls: "c-gold", l: "Mobile", r: "Flutter", t: "Audoko", p: "A navigation app built with Flutter." },
+          { cls: "c-zap", l: "Mobile", r: "Swift", t: "Hotel Booking", p: "An iOS booking flow in Swift storyboards." },
+          { cls: "c-scent", l: "Web", r: "React", t: "Spending tracker", p: "Keep an eye on spending, built with React." }
+        ]
+      },
+      beyond: {
+        w1: "Beyond", w2: "every limit",
+        blurb: ["I turn a brief into something that works: a game loop, a form that talks back, a screen that guides you.", "Final year in Data Science, building in the evenings. I like projects that mix code, design and an audience."],
+        stats: [[13, "", "projects on this page"], [5, "", "languages, Java to Dart"], [3, "", "platforms: game, web, mobile"]]
+      },
+      work: {
+        title: "Things I've<br>built",
+        len: 5.4,
+        cards: [
+          { art: "a-veng", l: "Game", r: "In progress", t: "Vengenvise", p: "2.5D dark fantasy action RPG. A skeleton warrior climbs eight floors, past a ghoul, a hound and a throne room boss.", tags: ["Unity 6", "C#", "URP"], foot: "3-hit combo &middot; necromancy", links: [["Play", "https://yano49.itch.io/vegenvise"], ["GitLab", "https://gitlab.com/Norman7781/vengenvise"]] },
+          { art: "a-hive", l: "Senior project", r: "Live site", t: "Test Hive", p: "A quiz and self-practice website, built as my senior project.", tags: ["Quiz", "Self-practice", "Web"], foot: "AU Discovery", links: [["Live", "https://test-hive-learning.vercel.app/login"], ["GitHub", "https://github.com/Tawan0224/Test-Hive"], ["AU page", "https://life.au.edu/ause-discovery/projects/01a0970e-11f3-7ee6-ac70-8fdcb2574ec2"]] },
+          { art: "a-ufo", l: "Game", r: "Java", t: "UFO with me", p: "A space shooting game written in Java.", tags: ["Java", "Game dev"], foot: "Space shooter", links: [["GitHub", "https://github.com/yano49/UFO_with_me"]] },
+          { art: "a-shoot", l: "Game", r: "Java", t: "Side-scroll shooter", p: "A side-scrolling shooter, my first Java game development project.", tags: ["Java", "Game dev"], foot: "Project 1", links: [["GitHub", "https://github.com/yano49/project1_side-scroll-shooter"]] },
+          { art: "a-form", l: "Web", r: "Live site", t: "Formbot", p: "A form bot for the VMS D-Code project, deployed on Netlify.", tags: ["HTML", "CSS", "Netlify"], foot: "VMS D-Code", links: [["Live", "https://formbot-vms.netlify.app/"], ["AU site", "https://vms.au.edu/dcode/projects/2023/form-chatbot/"], ["GitHub", "https://github.com/yano49/vms-dcode-formbot"]] },
+          { art: "a-clover", l: "Web", r: "JavaScript", t: "Clover countdown", p: "A memory website for the Clover Executive Board 2025&ndash;2026.", tags: ["JavaScript", "Web"], foot: "Board 2025&ndash;26", links: [["Live", "https://yano49.github.io/clover-countdown/"], ["GitHub", "https://github.com/yano49/clover-countdown"]] },
+          { art: "a-mint", l: "Web", r: "React", t: "Spending tracker", p: "A spending tracker built with React.", tags: ["React", "JavaScript", "CSS"], foot: "Personal finance", links: [["GitHub", "https://github.com/yano49/spending_tracker"]] },
+          { art: "a-gold", l: "Web", r: "React + Vite", t: "VAT calculator", p: "A VAT calculator built with React and Vite.", tags: ["React", "Vite"], foot: "Utility app", links: [["GitHub", "https://github.com/yano49/react-vat-calculator"]] },
+          { art: "a-fin", l: "Web", r: "JavaScript", t: "Fin customer", p: "A JavaScript customer app, with the source on GitHub.", tags: ["JavaScript"], foot: "Customer app", links: [["GitHub", "https://github.com/yano49/fin-customer"]] },
+          { art: "a-book", l: "Web", r: "Manga site", t: "Book Buddy", p: "A website for reading and keeping track of manga.", tags: ["Web", "Manga"], foot: "Manga site", links: [["Live", "http://wad-6611201.eastasia.cloudapp.azure.com:3001/bookbuddy"], ["GitHub", "https://github.com/Norman7781/Book_Buddy"]] },
+          { art: "a-aie", l: "Mobile", r: "Flutter", t: "Audoko", p: "A navigation app built with Flutter.", tags: ["Flutter", "Dart", "Navigation"], foot: "Flutter app", links: [["Get app", "https://1024terabox.com/s/1zL5-Oq0SESQLTKxGuNbURQ"]] },
+          { art: "a-scent", l: "Mobile", r: "Swift", t: "Hotel Booking", p: "An iOS hotel booking app laid out with Swift storyboards.", tags: ["Swift", "Storyboard", "iOS"], foot: "iOS", links: [["GitHub", "https://github.com/yano49/Hotel_Booking"]] },
+          { art: "a-zap", l: "Mobile", r: "Swift", t: "Historify", p: "A quiz app for iOS built with Swift.", tags: ["Swift", "iOS", "Quiz"], foot: "iOS", links: [["Get app", "https://1024terabox.com/s/1U7Pnx_FQocIAPhqMdgVSDQ"]] }
+        ],
+        last: { t: "More on GitHub", p: "Smaller experiments and coursework live on my GitHub profile.", btn: "Open GitHub", href: "https://github.com/yano49", ext: true }
+      },
+      stack: {
+        h: "A toolbox that", h2: "keeps growing", sub: "What I reach for across games, web apps and mobile apps.",
+        chips: [["Unity 6", "game"], ["C#", "game"], ["Java", "game"], ["Swift", "ios"], ["Flutter", "mobile"], ["Dart", "mobile"], ["React", "web"], ["Vite", "web"], ["JavaScript", "web"], ["HTML + CSS", "web"], ["Netlify", "deploy"], ["PyTorch", "ml"], ["AWS", "cloud"], ["Cybersecurity", "security"], ["Data strategy", "data"], ["Git", "team"], ["GitLab", "team"], ["GitHub", "team"]]
+      },
+      cta: { lines: [["Build", "beyond"], ["the", "brief"]], p: "Games and apps, from a first sketch to something people can use. Meet the person behind them." }
+    },
+    biz: {
+      hero: {
+        eyebrow: "Yan &middot; Business", h1: "Campaigns and teams that", dim: "move first",
+        lead: "I'm Yan. For three years at AIESEC in Assumption University I led teams, ran SDG events and managed marketing: Team Leader of Engage, Vice President of Engage, then Vice President of Marketing.",
+        av: [["T", "#1a6df0"], ["E", "#1fb5a0"], ["M", "#f4902a"], ["S", "#d2457f"]], trust: "3 roles &middot; 9 events &middot; 3 years",
+        card: { pill: "&#9679; Latest role", live: "2025 &ndash; 26", mono: "AIESEC in Assumption University", title: "Vice President of Marketing", sub: "Content calendar, CTAs, reports and synergy meetings", segs: [1, 1, 1], label: "Three years, three roles at AIESEC" }
+      },
+      rail: {
+        marq: ["Plans that land", "Teams that move", "Impact that lasts"],
+        cards: [
+          { cls: "c-aie", l: "Team Leader", r: "2023 &ndash; 24", t: "Team Leader of Engage", p: "Two six-month terms, one year in total." },
+          { cls: "c-mint", l: "Vice President", r: "2024 &ndash; 25", t: "Vice President of Engage", p: "Started YouthSpeak Forum 2024 and more." },
+          { cls: "c-gold", l: "Vice President", r: "2025 &ndash; 26", t: "Vice President of Marketing", p: "Content, CTAs, reports and synergy." },
+          { cls: "c-scent", l: "Event", r: "2 days", t: "BuddyLingo", p: "The SDGs, lived through a simulation." },
+          { cls: "c-veng", l: "Event", r: "6 days", t: "Living Impact", p: "SDGs through Thai culture." },
+          { cls: "c-zap", l: "Event", r: "Forum", t: "YouthSpeak Forum", p: "Leadership, mindset and communication." }
+        ]
+      },
+      beyond: {
+        w1: "Growth", w2: "with intent",
+        blurb: ["I plan a campaign the way I'd build a system: a clear goal, a measurable KPI and a report that shows what worked.", "Three years at AIESEC in Assumption University: Team Leader, Vice President of Engage, then Vice President of Marketing."],
+        stats: [[3, "", "years at AIESEC"], [3, "", "roles held"], [9, "", "events and programs"]]
+      },
+      work: {
+        title: "Events and teams<br>I've led",
+        len: 6.2,
+        cards: [
+          { art: "a-mint", l: "Team Leader &middot; Engage", r: "2023 &ndash; 24", t: "Gift of Love", p: "A giving day at Camellia Homes with donations and drawing activities with the children.", tags: ["Donation", "Drawing", "Community"], foot: "Camellia Homes", links: [["Photos", "https://drive.google.com/drive/folders/1B-Mo9edAUyNE_fWznDpr8KDsXIo0HWRu?usp=sharing"]] },
+          { art: "a-aie", l: "Team Leader &middot; Engage", r: "2023 &ndash; 24", t: "BuddyLingo", p: "A two-day event on the SDGs, with an SDG simulation so participants experience the goals first-hand.", tags: ["SDGs", "Simulation"], foot: "Two-day event", links: [["Instagram", "https://www.instagram.com/p/C8Znm8HpBYz/"]] },
+          { art: "a-gold", l: "VP &middot; Engage", r: "2024 &ndash; 25", t: "YouthSpeak Forum 2024", p: "Initiated and organized. Topics: Cultivating Leadership &amp; Teamwork, Effective Communication, Resilience &amp; Adaptability.", tags: ["Forum", "Leadership"], foot: "Initiated by me", links: [["Instagram", "https://www.instagram.com/p/DAWFaXRvj29/"]] },
+          { art: "a-scent", l: "VP &middot; Engage", r: "2024 &ndash; 25", t: "Gift of Christmas", p: "Donations and drawing activities with volunteers and children at a children's foundation.", tags: ["Donation", "Drawing", "Volunteers"], foot: "Children's foundation", links: [["Reel", "https://www.instagram.com/reel/DD4vGEUyjZ5/"]] },
+          { art: "a-form", l: "VP &middot; Engage", r: "2024 &ndash; 25", t: "Market Hunt", p: "Siam Journey x AIESEC. Market Hunt is day two of the five-day Siam Journey, linking the SDGs to Thai culture.", tags: ["SDGs", "Thai culture"], foot: "Day 2 of 5", links: [["Reel", "https://www.instagram.com/reel/DGvZ2d8y7qB/"], ["Award", "https://lnkd.in/p/gfu7eC9U"]] },
+          { art: "a-hive", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "Marketing engine", p: "Initiated and managed the content calendar, CTAs, reports and synergy meetings with Global Volunteer, Recruitment and YouthFootprints.", tags: ["Content calendar", "CTA", "Reporting"], foot: "Synergy meetings" },
+          { art: "a-fin", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "Recruitment", p: "Marketing for AIESEC recruitment, shared as Instagram posts.", tags: ["Recruitment", "Content"], foot: "Two posts", links: [["Post 1", "https://www.instagram.com/p/DK7Jej3JjAD/"], ["Post 2", "https://www.instagram.com/p/DQ1XgjcCRuI/"]] },
+          { art: "a-zap", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "YouthFootprints", p: "Content and marketing for YouthFootprints.", tags: ["YouthFootprints", "Content"], foot: "Global Volunteer", links: [["Instagram", "https://www.instagram.com/p/DPy-woziQc1/"]] },
+          { art: "a-ufo", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "YouthSpeak Forum 2025", p: "Topics: Look Back at Your Old Version, Self-Awareness, Stay Above the Management, Growth Mindset.", tags: ["Forum", "Mindset"], foot: "2025 edition", links: [["Reel", "https://www.instagram.com/reel/DR7SfzFCZDa/"]] },
+          { art: "a-clover", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "Generation of Warmth", p: "Donating, dancing and singing Christmas songs for the elders.", tags: ["Elders", "Christmas", "Donation"], foot: "Christmas", links: [["Reel", "https://www.instagram.com/reel/DS1v6zyiJfy/"]] },
+          { art: "a-book", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "Global Imprint", p: "Focused on the global volunteer program, with hands-on experience and simulation.", tags: ["Global Volunteer", "Simulation"], foot: "Hands-on", links: [["Reel", "https://www.instagram.com/reel/DUm1gqWCU1O/"]] },
+          { art: "a-shoot", l: "VP &middot; Marketing", r: "2025 &ndash; 26", t: "Living Impact", p: "A six-day event on experiencing the SDGs through Thai culture.", tags: ["SDGs", "Thai culture"], foot: "Six-day event", links: [["Reel", "https://www.instagram.com/reel/DVOWHXfiLsK/"], ["Post", "https://www.instagram.com/p/DdgmRhDCbM5/"]] }
+        ],
+        last: { t: "Your event or campaign here", p: "Bring a brief, a team or a launch and let's talk it through.", btn: "Say hello", mail: true }
+      },
+      stack: {
+        h: "A playbook that", h2: "keeps growing", sub: "What I use to plan, run and report an event or campaign.",
+        chips: [["Event planning", "events"], ["SDG programs", "impact"], ["Content calendar", "plan"], ["CTA design", "plan"], ["Reporting", "measure"], ["Synergy meetings", "teams"], ["Project management", "core"], ["Project planning", "core"], ["Team management", "people"], ["Team leadership", "people"], ["Interpersonal communication", "people"], ["Partnerships", "growth"], ["Campaign strategy", "plan"], ["KPI design", "measure"], ["Data strategy", "data"], ["Business intelligence", "data"]]
+      },
+      cta: { lines: [["Grow", "with"], ["the", "right", "team"]], p: "Events, campaigns and student teams, from a first brief to a report that shows the result. Meet the person behind them." }
+    }
+  };
+
+  /* =====================  HTML BUILDERS  ===================== */
+  function heroHTML(k, d) {
+    var c = d.card;
+    return '<section class="track sd-' + k + '" id="' + k + '-hero" data-sd="' + k + '" data-kind="hero" style="--len:2.2" data-free-m><div class="stick hero t-' + k + '"><div class="wrap">' +
+      '<div class="hcopy"><p class="mono" style="color:rgba(255,255,255,.7)">' + d.eyebrow + '</p>' +
+      '<h1 style="margin-top:18px">' + d.h1 + ' <span class="dim">' + d.dim + '</span></h1><p class="lead">' + d.lead + '</p>' +
+      '<div class="actions"><a class="btn light" href="#work">See my work</a><a class="btn ghost" href="#about">About me &rarr;</a></div>' +
+      '<div class="trust"><div class="avs" aria-hidden="true">' + d.av.map(function (a) { return '<i style="background:' + a[1] + '">' + a[0] + '</i>'; }).join("") + '</div><span>' + d.trust + '</span></div></div>' +
+      '<div class="gw"><div class="glass"><div class="top"><span class="pill">' + c.pill + '</span><span class="pill live">' + c.live + '</span></div><div>' +
+      '<p class="mono" style="color:rgba(255,255,255,.75)">' + c.mono + '</p><div class="box" style="margin-top:10px"><b>' + c.title + '</b><span>' + c.sub + '</span>' +
+      '<div class="segs" aria-label="' + c.label + '">' + c.segs.map(function (s) { return '<i' + (s === 1 ? ' class="on"' : s ? ' class="on" style="opacity:.5"' : '') + '></i>'; }).join("") + '</div></div></div></div></div>' +
+      '</div><div class="wash"></div></div></section>';
+  }
+  function railHTML(k, d) {
+    return '<section class="track sd-' + k + '" id="' + k + '-rail" data-sd="' + k + '" data-kind="rail" style="--len:3.4" data-land=".02"><div class="stick rail t-' + k + '">' +
+      '<div class="marq" aria-hidden="true"><p>' + d.marq.join(' <em>&middot;</em> ') + ' <em>&middot;</em> ' + d.marq[0] + ' <em>&middot;</em> ' + d.marq[1] + '</p></div><div class="stage">' +
+      d.cards.map(function (c) { return '<article class="card3d ' + c.cls + '"><div class="t mono"><span>' + c.l + '</span><span>' + c.r + '</span></div><div><h3>' + c.t + '</h3><p>' + c.p + '</p></div></article>'; }).join("") +
+      '</div><div class="cap"><span class="mono capn">1 / ' + d.cards.length + '</span><b class="capt">' + d.cards[0].t + '</b></div><a class="btn dark go rgo" href="#work">Explore the work</a></div></section>';
+  }
+  function beyondHTML(k, d) {
+    return '<section class="track sd-' + k + '" id="' + k + '-beyond" data-sd="' + k + '" data-kind="beyond" style="--len:2.6"><div class="stick beyond t-' + k + '">' +
+      '<h2 class="big b1 bw1">' + d.w1 + '</h2><div class="blurb">' + d.blurb.map(function (t) { return '<p>' + t + '</p>'; }).join("") + '</div>' +
+      '<div class="starw"><svg class="star" viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="M50 0C52 30 70 48 100 50 70 52 52 70 50 100 48 70 30 52 0 50 30 48 48 30 50 0Z"/></svg></div>' +
+      '<div class="stats">' + d.stats.map(function (s) { return '<div class="st"><b data-to="' + s[0] + '" data-sfx="' + s[1] + '">' + s[0] + s[1] + '</b><span>' + s[2] + '</span></div>'; }).join("") + '</div>' +
+      '<h2 class="big b2 bw2">' + d.w2 + '</h2></div></section>';
+  }
+  function workHTML(k, d) {
+    var cards = d.cards.map(function (c) {
+      var lk = (c.links || (c.link ? [["Repo", c.link]] : [])).map(function (l) { return '<a class="more" href="' + l[1] + '" target="_blank" rel="noopener">' + l[0] + ' &nearr;</a>'; }).join("");
+      return '<article class="proj"><div class="art ' + c.art + '"></div><div class="meta mono"><span>' + c.l + '</span><span>' + c.r + '</span></div><div><h3>' + c.t + '</h3><p>' + c.p + '</p>' +
+        '<div class="tags">' + c.tags.map(function (t) { return '<span>' + t + '</span>'; }).join("") + '</div></div><div class="foot"><span class="mono" style="color:rgba(255,255,255,.6)">' + c.foot + '</span>' +
+        (lk ? '<span class="lk">' + lk + '</span>' : '') + '</div></article>';
+    }).join("");
+    var L = d.last, lb = L.mail ? '<button type="button" class="btn light" data-mail>' + L.btn + '</button>' : L.href ? '<a class="btn light" href="' + L.href + '"' + (L.ext ? ' target="_blank" rel="noopener"' : '') + '>' + (L.btn || "About me") + '</a>' : '<a class="btn light" href="#about">About me</a>';
+    return '<section class="track sd-' + k + '" id="' + k + '-work" data-sd="' + k + '" data-kind="work" style="--len:' + (d.len || 3.6) + '" data-land=".02"><div class="stick work t-' + k + '">' +
+      '<div class="wrap head"><div><p class="mono" style="color:var(--muted);margin-bottom:12px">Selected work</p><h2>' + d.title + '</h2></div><p class="hint">Keep scrolling &darr;</p></div>' +
+      '<div class="wview"><div class="wstrip">' + cards +
+      '<article class="proj last"><p class="mono" style="color:var(--muted)">Next up</p><h3>' + L.t + '</h3><p>' + L.p + '</p>' + lb + '</article></div></div>' +
+      '<div class="wrap"><div class="pbar" aria-hidden="true"><i class="pfill"></i></div></div></div></section>';
+  }
+  function stackHTML(k, d) {
+    return '<section class="track sd-' + k + '" id="' + k + '-stack" data-sd="' + k + '" data-kind="stack" style="--len:2.4" data-land=".7"><div class="stick stack t-' + k + '"><div class="wrap">' +
+      '<h2 class="stackh">' + d.h + '<br><span>' + d.h2 + '</span></h2><p class="sub stacksub">' + d.sub + '</p><div class="chips">' +
+      d.chips.map(function (c) { return '<span class="chip">' + c[0] + '<small>' + c[1] + '</small></span>'; }).join("") + '</div></div></div></section>';
+  }
+  var CHROME = '<svg class="chrome" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="chr1-K" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".28" stop-color="#8c86a6"/><stop offset=".5" stop-color="#2a2540"/><stop offset=".72" stop-color="#cfc6ee"/><stop offset="1" stop-color="#ffffff"/></linearGradient><linearGradient id="chr2-K" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b98cff" stop-opacity=".9"/><stop offset=".5" stop-color="#1b1233" stop-opacity="0"/><stop offset="1" stop-color="#ffffff" stop-opacity=".8"/></linearGradient></defs>' +
+    '<path fill="url(#chr1-K)" d="M100 6C108 62 140 92 194 100 140 108 108 138 100 194 92 138 60 108 6 100 60 92 92 62 100 6Z"/>' +
+    '<path fill="url(#chr2-K)" d="M100 6C108 62 140 92 194 100 140 108 108 138 100 194 92 138 60 108 6 100 60 92 92 62 100 6Z" transform="rotate(32 100 100) scale(.82) translate(22 22)"/>' +
+    '<path fill="none" stroke="#fff" stroke-opacity=".7" stroke-width=".8" d="M100 6C108 62 140 92 194 100"/></svg>';
+  function ctaHTML(k, d) {
+    var h = d.lines.map(function (line) { return line.map(function (w) { return '<span class="w"><span>' + w + '</span></span>'; }).join(" "); }).join("<br>");
+    return '<section class="track sd-' + k + '" id="' + k + '-cta" data-sd="' + k + '" data-kind="cta" style="--len:2.2" data-land=".6"><div class="stick finale t-' + k + '"><div class="wrap"><div>' +
+      '<h2 class="ctah">' + h + '</h2><p class="ctap">' + d.p + '</p><a class="btn light ctab" href="#about">Meet Yan &rarr;</a></div>' +
+      '<div class="chrome-wrap">' + CHROME.replace(/-K/g, "-" + k) + '</div></div></div></section>';
+  }
+  $("#sides").innerHTML = ["dev", "biz"].map(function (k) {
+    var d = DATA[k];
+    return heroHTML(k, d.hero) + railHTML(k, d.rail) + beyondHTML(k, d.beyond) + workHTML(k, d.work) + stackHTML(k, d.stack) + ctaHTML(k, d.cta);
+  }).join("");
+
+  /* =====================  SCROLL ANIMATIONS (one factory per section type)  ===================== */
+  function mkHero(tr) {
+    var hc = $(".hcopy", tr), gw = $(".gw", tr), wash = $(".wash", tr), st = tr.firstElementChild, glass = $(".glass", tr), dx = 0;
+    if (!reduce) gw.addEventListener("pointermove", function (e) {
+      var r = glass.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      glass.style.setProperty("--ry", (x * 14).toFixed(1) + "deg"); glass.style.setProperty("--rx", (-y * 12).toFixed(1) + "deg");
+    });
+    return {
+      measure: function () { dx = st.clientWidth / 2 - (gw.offsetLeft + gw.offsetWidth / 2); },
+      fn: function (p, pin) {
+        if (!pin) { hc.style.transform = ""; hc.style.opacity = ""; gw.style.transform = ""; gw.style.opacity = ""; wash.style.opacity = "0"; return; }
+        var a = seg(p, .04, .5), b = seg(p, .55, .95);
+        hc.style.transform = "translate3d(0," + f1(-a * 80) + "px,0)"; hc.style.opacity = f3(1 - seg(p, .08, .45));
+        gw.style.transform = "translate3d(" + f1(dx * a) + "px," + f1(-b * innerHeight * .05) + "px,0) scale(" + f3(1 + .35 * a + .9 * b) + ")";
+        gw.style.opacity = f3(1 - seg(p, .82, 1)); wash.style.opacity = f3(seg(p, .6, 1) * .97);
+      }
+    };
+  }
+  function mkRail(tr) {
+    var rc = $$(".card3d", tr), marq = $(".marq p", tr), capn = $(".capn", tr), capt = $(".capt", tr), rgo = $(".rgo", tr), cw = 280;
+    var names = rc.map(function (c) { return $("h3", c).innerHTML; });
+    return {
+      measure: function () { cw = rc[0].offsetWidth || cw; },
+      fn: function (p) {
+        var sp = cw * 1.22, c = p * (rc.length - 1);
+        rc.forEach(function (el, i) {
+          var d = i - c, a = Math.min(Math.abs(d), 3), f = 1 - Math.min(a, 1);
+          el.style.transform = "translate3d(" + f1(d * sp) + "px," + f1(a * 14) + "px," + f1(-a * 130) + "px) rotateY(" + f1(-d * 30) + "deg) rotateZ(" + f1(d * 2.2) + "deg) scale(" + f3(1 + f * .14 - a * .04) + ")";
+          el.style.zIndex = String(20 - Math.round(a * 3));
+          el.style.opacity = String(clamp(1 - Math.max(a - 2.3, 0) * 1.5, 0, 1));
+        });
+        marq.style.transform = "translate3d(" + f1(innerWidth * .1 - p * innerWidth * 1.9) + "px,0,0)";
+        var idx = Math.round(c);
+        if (capt.innerHTML !== names[idx]) { capt.innerHTML = names[idx]; capn.textContent = (idx + 1) + " / " + rc.length; }
+        var o = seg(p, .78, .95);
+        rgo.style.opacity = f3(o); rgo.style.pointerEvents = o > .3 ? "auto" : "none";
+      }
+    };
+  }
+  function mkBeyond(tr) {
+    var bw1 = $(".bw1", tr), bw2 = $(".bw2", tr), starw = $(".starw", tr), blurb = $(".blurb", tr), sts = $$(".st", tr);
+    return {
+      fn: function (p) {
+        var w = innerWidth, s1 = seg(p, 0, .28), s2 = seg(p, .12, .4);
+        bw1.style.transform = "translate3d(" + f1(-(1 - s1) * w * .7) + "px,0,0)"; bw1.style.opacity = f3(s1);
+        bw2.style.transform = "translate3d(" + f1((1 - s2) * w * .7) + "px,0,0)"; bw2.style.opacity = f3(s2);
+        starw.style.transform = "scale(" + f3(.12 + seg(p, .05, .55) * .88 + seg(p, .6, 1) * .45) + ") rotate(" + f1(p * 140) + "deg)";
+        starw.style.opacity = f3(.25 + .75 * seg(p, 0, .2));
+        var b = seg(p, .3, .5);
+        blurb.style.opacity = f3(b); blurb.style.transform = "translate3d(0," + f1((1 - b) * 30) + "px,0)";
+        sts.forEach(function (el, i) {
+          var t = seg(p, .42 + i * .1, .66 + i * .1), n = $("b", el), to = +n.getAttribute("data-to"), sfx = n.getAttribute("data-sfx") || "";
+          n.innerHTML = Math.round(to * t) + sfx; el.style.opacity = f3(t); el.style.transform = "translate3d(0," + f1((1 - t) * 24) + "px,0)";
+        });
+      }
+    };
+  }
+  function mkWork(tr) {
+    var wv = $(".wview", tr), ws = $(".wstrip", tr), wp = $$(".proj", tr), pfill = $(".pfill", tr), vw = 0, max = 0, pc = [];
+    return {
+      measure: function () { vw = wv.clientWidth; max = Math.max(0, ws.scrollWidth - vw); pc = wp.map(function (el) { return el.offsetLeft + el.offsetWidth / 2; }); },
+      fn: function (p) {
+        var tx = reduce ? 0 : -p * max;
+        ws.style.transform = "translate3d(" + f1(tx) + "px,0,0)";
+        wp.forEach(function (el, i) {
+          var d = (pc[i] + tx - vw / 2) / (vw || 1);
+          el.style.transform = "perspective(1200px) rotateY(" + f1(clamp(d, -1.2, 1.2) * -14) + "deg) scale(" + f3(1 - Math.min(Math.abs(d), 1) * .06) + ")";
+          var art = el.firstElementChild;
+          if (art.classList.contains("art")) art.style.transform = "translate3d(" + f1(d * -50) + "px,0,0) scale(1.2)";
+        });
+        pfill.style.transform = "scaleX(" + f3(p) + ")";
+      }
+    };
+  }
+  function mkStack(tr) {
+    var chips = $$(".chip", tr), h = $(".stackh", tr), sub = $(".stacksub", tr), seed = 7;
+    var rnd = function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    var seeds = chips.map(function () { return { x: (rnd() - .5) * 1.1, y: (rnd() - .5) * 1.1, r: (rnd() - .5) * 90, d: rnd() }; });
+    chips.forEach(function (c, i) { c.style.setProperty("--d", (-i * .55).toFixed(2) + "s"); });
+    return {
+      fn: function (p) {
+        var w = innerWidth, hh = innerHeight;
+        chips.forEach(function (c, i) {
+          var s = seeds[i], t = seg(p, .03 + s.d * .28, .45 + s.d * .35), k = 1 - t;
+          c.style.transform = "translate3d(" + f1(s.x * w * k) + "px," + f1(s.y * hh * k) + "px,0) rotate(" + f1(s.r * k) + "deg) scale(" + f3(.55 + .45 * t) + ")";
+          c.style.opacity = f3(.12 + .88 * t);
+        });
+        var a = seg(p, 0, .35);
+        h.style.transform = "scale(" + f3(.82 + .18 * a) + ")"; h.style.opacity = f3(.15 + .85 * a); sub.style.opacity = f3(seg(p, .25, .5));
+      }
+    };
+  }
+  function mkCta(tr) {
+    var cw = $$(".ctah .w > span", tr), ctap = $(".ctap", tr), ctab = $(".ctab", tr), chrome = $(".chrome", tr);
+    return {
+      fn: function (p) {
+        cw.forEach(function (s, i) { var t = seg(p, i * .07, i * .07 + .3); s.style.transform = "translate3d(0," + f1((1 - t) * 115) + "%,0)"; });
+        var t2 = seg(p, .35, .6);
+        [ctap, ctab].forEach(function (e) { e.style.opacity = f3(t2); e.style.transform = "translate3d(0," + f1((1 - t2) * 20) + "px,0)"; });
+        chrome.style.transform = "rotateY(" + f1(p * 540) + "deg) rotateZ(" + f1(p * 50 - 20) + "deg) scale(" + f3(.5 + .5 * seg(p, 0, .45)) + ")";
+      }
+    };
+  }
+  var abt = $("#abt"), portrait = $("#portrait");
+  function mkAbout() {
+    var wl = $("#wl"), wr = $("#wr"), al = $("#al"), ar = $("#ar"), chips2 = $("#chips2"), partner = $("#partner");
+    return {
+      fn: function (p) {
+        var w = innerWidth, s = seg(p, 0, .4), sp = seg(p, .04, .45), s2 = seg(p, .35, .6), s3 = seg(p, .5, .8);
+        wl.style.transform = "translate3d(" + f1(-(1 - s) * w * .6) + "px,0,0) scale(" + f3(1.25 - .25 * s) + ")";
+        wr.style.transform = "translate3d(" + f1((1 - s) * w * .6) + "px,0,0) scale(" + f3(1.25 - .25 * s) + ")";
+        wl.style.opacity = wr.style.opacity = f3(.1 + .9 * s);
+        portrait.style.setProperty("--pty", f1((1 - sp) * 30)); portrait.style.setProperty("--ps", f3(.9 + .1 * sp)); portrait.style.opacity = f3(sp);
+        al.style.opacity = f3(s2); al.style.transform = "translate3d(" + f1(-(1 - s2) * 40) + "px,0,0)";
+        ar.style.opacity = f3(s2); ar.style.transform = "translate3d(" + f1((1 - s2) * 40) + "px,0,0)";
+        [chips2, partner].forEach(function (e) { e.style.opacity = f3(s3); e.style.transform = "translate3d(0," + f1((1 - s3) * 40) + "px,0)"; });
+      }
+    };
+  }
+  var MK = { hero: mkHero, rail: mkRail, beyond: mkBeyond, work: mkWork, stack: mkStack, cta: mkCta, about: mkAbout };
+  var REST = { hero: 0, rail: .5, beyond: 1, work: 0, stack: 1, cta: 1, about: 1 };
+
+  /* =====================  SCROLL ENGINE  ===================== */
+  var tracks = $$(".track").map(function (el) {
+    var kind = el.getAttribute("data-kind");
+    return { el: el, stick: el.firstElementChild, kind: kind, side: el.getAttribute("data-sd"), api: MK[kind](el), last: -1, lastPin: null, top: 0, h: 0, pin: false };
+  });
+  function pinned(t) { return !reduce && getComputedStyle(t.stick).position === "sticky"; }
+  var hint = $("#hint"), links = $$(".nav a.l");
+  var side = "dev", cur = scrollY, lastT = 0, running = false;
+  try { var sv = localStorage.getItem("wy-side"); if (sv === "dev" || sv === "biz") side = sv; } catch (e) {}
+
+  function resolve(h) {
+    h = h.replace("#", "");
+    return document.getElementById(side + "-" + h) || document.getElementById(h);
+  }
+  function cache() {
+    tracks.forEach(function (t) {
+      t.top = t.el.getBoundingClientRect().top + scrollY; t.h = t.el.offsetHeight; t.pin = pinned(t); t.last = -1;
+      if (t.h && t.api.measure) t.api.measure();
+    });
+  }
+  function spy() {
+    var y = innerHeight * .45, curI = -1;
+    links.forEach(function (a, i) { var t = resolve(a.getAttribute("href")); if (t && t.offsetHeight && t.getBoundingClientRect().top <= y) curI = i; });
+    links.forEach(function (a, i) { a.classList.toggle("on", i === curI); });
+  }
+  function frame() {
+    var vh = innerHeight;
+    tracks.forEach(function (t) {
+      if (!t.h) return;
+      var top = t.top - cur, p;
+      if (t.pin) { var span = t.h - vh; p = span > 0 ? clamp(-top / span, 0, 1) : 0; }
+      else p = clamp((vh - top) / (vh * .85), 0, 1);
+      if (Math.abs(p - t.last) < .0003 && t.pin === t.lastPin) return;
+      t.last = p; t.lastPin = t.pin; t.api.fn(p, t.pin);
+    });
+  }
+  function tick(now) {
+    var dt = Math.min(now - lastT, 50) || 16; lastT = now;
+    var d = scrollY - cur;
+    if (Math.abs(d) < .1) { cur = scrollY; frame(); running = false; return; }
+    cur += d * (1 - Math.exp(-dt / 85));
+    frame(); requestAnimationFrame(tick);
+  }
+  function onScroll() {
+    hint.style.opacity = scrollY > 40 ? "0" : "1";
+    spy();
+    if (!running) { running = true; lastT = performance.now(); requestAnimationFrame(tick); }
+  }
+  function relayout() {
+    cache(); cur = scrollY;
+    if (reduce) { tracks.forEach(function (t) { if (t.h) t.api.fn(REST[t.kind], false); }); return; }
+    frame();
+  }
+
+  /* ---------- sides ---------- */
+  function applySide(s) {
+    side = s; root.setAttribute("data-side", s);
+    try { localStorage.setItem("wy-side", s); } catch (e) {}
+    $$("[data-pick]").forEach(function (b) {
+      var on = b.getAttribute("data-pick") === s;
+      if (b.parentNode.classList.contains("seg")) b.setAttribute("aria-pressed", String(on));
+      else b.classList.toggle("on", on);
+    });
+    $(".partner .row span").innerHTML = s === "dev" ? "Your next collaborator<br>for games and apps" : "Your next collaborator<br>for campaigns and teams";
+  }
+  var veil = $("#veil"), busy = false;
+  function pick(s, fromGate) {
+    if (busy) return;
+    if (s === side) {
+      if (fromGate) { var h0 = resolve("hero"); if (h0) window.scrollTo({ top: h0.getBoundingClientRect().top + scrollY, behavior: reduce ? "auto" : "smooth" }); }
+      return;
+    }
+    busy = true; veil.classList.add("on");
+    setTimeout(function () {
+      var y = scrollY, c = null;
+      tracks.forEach(function (t) { if (t.h && t.top <= y + innerHeight * .45) c = t; });
+      var kind = c && c.side ? c.kind : null, off = c ? y - c.top : 0;
+      applySide(s); relayout();
+      var target = y;
+      if (fromGate) { target = tracks.filter(function (t) { return t.side === s && t.kind === "hero"; })[0].top; }
+      else if (kind) { var nt = tracks.filter(function (t) { return t.side === s && t.kind === kind; })[0]; if (nt) target = nt.top + off; }
+      root.style.scrollBehavior = "auto"; window.scrollTo(0, target); relayout();
+      setTimeout(function () { veil.classList.remove("on"); root.style.scrollBehavior = ""; busy = false; }, 90);
+    }, 320);
+  }
+  $$("[data-pick]").forEach(function (b) {
+    b.addEventListener("click", function () { pick(b.getAttribute("data-pick"), b.classList.contains("half")); });
+  });
+
+  applySide(side);
+  window.addEventListener("resize", relayout);
+  window.addEventListener("load", relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
+  relayout();
+  if (!reduce) { window.addEventListener("scroll", onScroll, { passive: true }); spy(); }
+
+  /* in-page links: land partway into a pinned section so the animation is already under way */
+  $$('a[href^="#"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var hash = a.getAttribute("href");
+      e.preventDefault();
+      if (hash === "#top") { window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); return; }
+      var t = resolve(hash); if (!t) return;
+      var land = parseFloat(t.getAttribute("data-land") || "0"), y = scrollY + t.getBoundingClientRect().top;
+      if (t.classList.contains("track") && getComputedStyle(t.firstElementChild).position === "sticky") y += land * Math.max(0, t.offsetHeight - innerHeight);
+      window.scrollTo({ top: y, behavior: reduce ? "auto" : "smooth" });
+    });
+  });
+
+  /* ---------- about: lens + parallax ---------- */
+  var hovering = false, t0 = performance.now();
+  var noHover = window.matchMedia("(hover: none)").matches;
+  function setLens(px, py) {
+    var r = portrait.getBoundingClientRect(), sx = r.width / portrait.offsetWidth || 1;
+    portrait.style.setProperty("--mx", ((px - r.left) / sx).toFixed(1) + "px");
+    portrait.style.setProperty("--my", ((py - r.top) / sx).toFixed(1) + "px");
+  }
+  abt.addEventListener("pointermove", function (e) {
+    hovering = true;
+    var r = abt.getBoundingClientRect();
+    abt.style.setProperty("--px", ((e.clientX - r.left) / r.width - .5).toFixed(3));
+    abt.style.setProperty("--py", ((e.clientY - r.top) / r.height - .5).toFixed(3));
+    setLens(e.clientX, e.clientY);
+  });
+  abt.addEventListener("pointerleave", function () {
+    hovering = false;
+    if (!noHover) { portrait.style.setProperty("--mx", "-400px"); portrait.style.setProperty("--my", "-400px"); }
+  });
+  function drift(now) {
+    if (!hovering && !reduce && noHover) {
+      var r = portrait.getBoundingClientRect(), t = (now - t0) / 1000;
+      setLens(r.left + r.width * (.5 + Math.sin(t * .9) * .12), r.top + r.height * (.33 + Math.cos(t * 1.3) * .03));
+    }
+    requestAnimationFrame(drift);
+  }
+  if (!reduce) requestAnimationFrame(drift);
+
+
+  /* ---------- achievements ---------- */
+  // Add items here: { c: "tech" | "aiesec" | "other", y: "2025", t: "Title", s: "Issuer", d: "One line", u: "link to the certificate" }
+  var ACH = [
+    { c: "tech", y: "Sep 2026", t: "Introduction to Cybersecurity", s: "Cisco", d: "Cybersecurity, network vulnerabilities and more." },
+    { c: "tech", y: "Aug 2026", t: "Agentic AI Skills for Future-Ready Graduates", s: "St. Martin Center for Professional Ethics, Assumption University", d: "Completed the training and passed the post-training assessment." },
+    { c: "aiesec", y: "2025 &ndash; 2026", t: "Certificate of Recognition: Vice President of Marketing", s: "AIESEC in Assumption University", d: "Recognized for completing the term as Local Committee Vice President of Marketing, Aug 2025 to Jul 2026." },
+    { c: "tech", y: "Feb 2026", t: "AWS Academy Graduate: Cloud Security Foundations", s: "Amazon Web Services (AWS)", d: "Training badge. Cloud security." },
+    { c: "tech", y: "Sep 2025", t: "AWS Academy Graduate: Cloud Foundations", s: "Amazon Web Services (AWS)", d: "Amazon Web Services and cloud computing." },
+    { c: "aiesec", y: "2024 &ndash; 2025", t: "Certificate of Appreciation: Vice President of Engage", s: "AIESEC in Assumption University", d: "Recognized for completing the term as Local Committee Vice President of Engage, Aug 2024 to Jul 2025." },
+    { c: "tech", y: "Oct 2024", t: "Career Essentials in GitHub Professional Certificate", s: "GitHub", d: "GitHub fundamentals." },
+    { c: "aiesec", y: "Feb &ndash; Jul 2024", t: "Certificate of Appreciation: Team Leader of Engage (2nd term)", s: "AIESEC in Assumption University", d: "Recognized for contribution and leadership as Team Leader of Engage, Feb to Jul 2024." },
+    { c: "aiesec", y: "Aug 2023 &ndash; Jan 2024", t: "Certificate of Appreciation: Team Leader of Engage (1st term)", s: "AIESEC in Assumption University", d: "Recognized for contribution and leadership as Team Leader of Engage, Aug 2023 to Jan 2024." },
+    { c: "tech", y: "May 2022", t: "Business Intelligence for Consultants", s: "LinkedIn Learning &middot; NASBA", d: "Business intelligence (BI)." },
+    { c: "tech", y: "May 2022", t: "Data Strategy", s: "LinkedIn Learning &middot; Project Management Institute", d: "Data strategy." },
+    { c: "other", y: "May 2022", t: "Mastering Organizational Chaos", s: "Project Management Institute", d: "Working through organizational chaos." },
+    { c: "other", y: "Apr 2022", t: "Interpersonal Communication", s: "LinkedIn Learning &middot; Project Management Institute", d: "Interpersonal communication." }
+  ];
+  var CATS = [["all", "All"], ["tech", "Tech"], ["aiesec", "AIESEC"], ["other", "Outside"]], achCat = "all";
+  var achGrid = $("#achgrid"), achTabs = $("#achtabs");
+  var io = (!reduce && "IntersectionObserver" in window) ? new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: .12 }) : null;
+  function watch(el) { if (io) io.observe(el); else el.classList.add("in"); }
+  $$(".rvh").forEach(watch);
+  function drawAch() {
+    var list = ACH.filter(function (a) { return achCat === "all" || a.c === achCat; });
+    var label = { tech: "Tech", aiesec: "AIESEC", other: "Outside" };
+    achTabs.innerHTML = CATS.map(function (c) {
+      var n = c[0] === "all" ? ACH.length : ACH.filter(function (a) { return a.c === c[0]; }).length;
+      return '<button type="button" data-cat="' + c[0] + '" aria-pressed="' + (c[0] === achCat) + '">' + c[1] + ' <small>' + n + '</small></button>';
+    }).join("");
+    achGrid.innerHTML = list.map(function (a, i) {
+      return '<article class="ac" style="--i:' + i + '" data-c="' + a.c + '"><div class="top mono"><i>' + label[a.c] + '</i><span>' + a.y + '</span></div><h3>' + a.t + '</h3><p class="iss">' + a.s + '</p>' +
+        (a.d ? '<p class="dsc">' + a.d + '</p>' : '') + (a.u ? '<a class="acl" href="' + a.u + '" target="_blank" rel="noopener">View certificate &nearr;</a>' : '') + '</article>';
+    }).join("") + (!list.length ? '<article class="ac ghost" style="--i:' + list.length + '"><h3>' + (list.length ? "More certificates are on the way" : "Nothing listed here yet") + '</h3><p class="dsc">Tech, AIESEC and outside certificates are added as they are collected.</p></article>' : '');
+    $$(".ac", achGrid).forEach(watch);
+    relayout();
+  }
+  achTabs.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-cat]"); if (!b) return;
+    achCat = b.getAttribute("data-cat"); drawAch();
+  });
+  drawAch();
+
+
+  /* ---------- contact ---------- */
+  var SOC = [
+    ["LinkedIn", "https://www.linkedin.com/in/wai-yan-mya-thaung-270296238", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11.5H3V9.75Zm6.5 0h3.84v1.57h.06c.54-.96 1.85-1.97 3.8-1.97 4.06 0 4.8 2.57 4.8 5.92v6.98h-4v-6.19c0-1.48-.03-3.38-2.1-3.38-2.1 0-2.42 1.6-2.42 3.27v6.3h-4V9.75Z"/></svg>'],
+    ["GitHub", "https://github.com/yano49", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.69 1.25 3.34.96.1-.74.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>'],
+    ["Email", "#mail", '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm9 7.2L4.6 7H19.4L12 12.2ZM4 9.1V17h16V9.1l-8 5.6-8-5.6Z"/></svg>']
+  ];
+  $("#soc").innerHTML = SOC.map(function (x) { return x[0] === "Email" ? '<button type="button" class="pill" data-mail>' + x[2] + x[0] + '</button>' : '<a href="' + x[1] + '" target="_blank" rel="noopener">' + x[2] + x[0] + '</a>'; }).join("");
+  var mail = $("#mail"), mn = $("#mn"), me = $("#me"), mm = $("#mm"), mgm = $("#mgm"), mapp = $("#mapp"), mnote = $("#mnote");
+  function draft() {
+    var nm = mn.value.trim(), em = me.value.trim(), msg = mm.value.trim();
+    var subject = "Hello from " + (nm || "your portfolio");
+    var body = "Hi Yan,\n\n" + (msg || "I'd like to get in touch.") + "\n\n" + (nm || "") + (em ? "\n" + em : "");
+    mapp.href = "https://outlook.live.com/mail/0/deeplink/compose?to=" + encodeURIComponent(EMAIL) + "&subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    mgm.href = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(EMAIL) + "&su=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+  [mn, me, mm].forEach(function (el) { el.addEventListener("input", draft); });
+  function openMail() {
+    draft();
+    if (mail.showModal) { if (!mail.open) mail.showModal(); } else mail.setAttribute("open", "");
+    mn.focus();
+  }
+  $$("[data-mail]").forEach(function (b) { b.addEventListener("click", openMail); });
+  $("#mailx").addEventListener("click", function () { mail.close(); });
+  mail.addEventListener("click", function (e) { if (e.target === mail) mail.close(); });
+  $("#mcopy").addEventListener("click", function () {
+    var ok = function () { mnote.textContent = "Copied " + EMAIL; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(EMAIL).then(ok, function () { mnote.textContent = "Email: " + EMAIL; });
+    else mnote.textContent = "Email: " + EMAIL;
+  });
+  [mgm, mapp].forEach(function (a) { a.addEventListener("click", function () { mnote.textContent = "Draft opened in a new tab. Press send there."; }); });
+
+  /* ---------- read more + connect ---------- */
+  var rm = $("#readmore"), panel = $("#panel"), toast = $("#toast"), tt;
+  function openPanel(open) { panel.hidden = !open; rm.setAttribute("aria-expanded", String(open)); rm.textContent = open ? "Show less" : "Read more"; }
+  rm.addEventListener("click", function () { openPanel(panel.hidden); });
+  function say(msg) { toast.textContent = msg; toast.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toast.hidden = true; }, 2600); }
+  $("#connect").addEventListener("click", openMail);
+})();
+</script>
+</body>
+</html>
